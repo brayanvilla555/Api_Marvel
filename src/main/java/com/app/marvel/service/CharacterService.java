@@ -9,4 +9,6 @@ import java.util.List;
 @Service
 public interface CharacterService {
     List<CharacterDto> findAllCharacter(String name, int[] series, int[] events, int[] stories, MyPageableDto pagination);
+
+    CharacterDto findCharacterById(String id);
 }

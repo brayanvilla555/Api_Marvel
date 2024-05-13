@@ -21,4 +21,10 @@ public class CharacterServiceImpl implements CharacterService {
         return characterRepository.findAllCharacter(name, series, events, series, pagination);
     }
 
+    @Override
+    public CharacterDto findCharacterById(String id) {
+        return characterRepository.findCharacterById(id);
+
+    }
+
 }

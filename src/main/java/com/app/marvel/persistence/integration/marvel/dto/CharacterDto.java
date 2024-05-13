@@ -14,4 +14,5 @@ public class CharacterDto {
     private String description;
     private String modified;
     private String resourceURI ;
+
 }

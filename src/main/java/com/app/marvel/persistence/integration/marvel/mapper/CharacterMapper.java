@@ -20,7 +20,7 @@ public class CharacterMapper {
         return characters;
     }
 
-    private static  CharacterDto toCharacterDto(JsonNode characterNode){
+    public static  CharacterDto toCharacterDto(JsonNode characterNode){
         if(characterNode == null ){
             throw new IllegalArgumentException("El nodo Json no puede ser null");
         }

@@ -5,14 +5,12 @@ import com.app.marvel.persistence.integration.marvel.MarvelApiConfig;
 import com.app.marvel.persistence.integration.marvel.dto.CharacterDto;
 import com.app.marvel.persistence.integration.marvel.mapper.CharacterMapper;
 import com.app.marvel.service.HttpClientService;
-import com.app.marvel.service.impl.RestTemplateService;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,6 +42,19 @@ public class CharacterRepository {
         JsonNode reponse = httpClientService.doGet(characterBasePath, marvelQueryParamts, JsonNode.class);
 
         return CharacterMapper.toDoList(reponse);
+    }
+
+    public CharacterDto findCharacterById(String id) {
+        Map<String, String> marvelQueryParams = marvelApiConfig.getAuthenticationQueryParams();
+
+
+
+        String finalUrl = characterBasePath.concat("/").concat(id);
+
+        JsonNode jsonNode = httpClientService.doGet(finalUrl, marvelQueryParams ,JsonNode.class);
+
+        return CharacterMapper.toDoList(jsonNode).get(0);
+
     }
 
     private Map<String, String> getQueryParamsForFindAll(String name, int[] series, int[] events, int[] stories, MyPageableDto pagination) {

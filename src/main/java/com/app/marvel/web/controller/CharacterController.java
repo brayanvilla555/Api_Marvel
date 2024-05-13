@@ -5,10 +5,7 @@ import com.app.marvel.persistence.integration.marvel.dto.CharacterDto;
 import com.app.marvel.service.CharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +28,10 @@ public class CharacterController {
 
         return ResponseEntity.ok(characterService.findAllCharacter(name, series, events, stories, pagination));
 
+    }
+
+    @GetMapping("/{characterId}")
+    public ResponseEntity<CharacterDto> findCharacterById(@PathVariable String characterId){
+        return ResponseEntity.ok(characterService.findCharacterById(characterId));
     }
 }
