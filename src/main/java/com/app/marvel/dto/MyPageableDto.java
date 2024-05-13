@@ -1,9 +1,6 @@
 package com.app.marvel.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-
-public record Pagination(
+public record MyPageableDto(
         Integer limit,
         Integer offset
 ) {

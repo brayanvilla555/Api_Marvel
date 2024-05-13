@@ -1,8 +1,8 @@
 package com.app.marvel.service.impl;
 
 
+import com.app.marvel.dto.MyPageableDto;
 import com.app.marvel.persistence.integration.marvel.dto.CharacterDto;
-import com.app.marvel.dto.Pagination;
 import com.app.marvel.persistence.integration.marvel.repository.CharacterRepository;
 import com.app.marvel.service.CharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class CharacterServiceImpl implements CharacterService {
     private CharacterRepository characterRepository;
 
     @Override
-    public List<CharacterDto> findAllCharacter(String name, int[] series, int[] events, int[] stories, Pagination pagination) {
+    public List<CharacterDto> findAllCharacter(String name, int[] series, int[] events, int[] stories, MyPageableDto pagination) {
 
         return characterRepository.findAllCharacter(name, series, events, series, pagination);
     }

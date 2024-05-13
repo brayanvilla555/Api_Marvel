@@ -1,7 +1,7 @@
 package com.app.marvel.web.controller;
 
+import com.app.marvel.dto.MyPageableDto;
 import com.app.marvel.persistence.integration.marvel.dto.CharacterDto;
-import com.app.marvel.dto.Pagination;
 import com.app.marvel.service.CharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +27,7 @@ public class CharacterController {
                                            @RequestParam(defaultValue = "10") int limit,
                                            @RequestParam(defaultValue = "0") int offset){
 
-        Pagination pagination = new Pagination(limit, offset);
+        MyPageableDto pagination = new MyPageableDto(limit, offset);
 
         return ResponseEntity.ok(characterService.findAllCharacter(name, series, events, stories, pagination));
 
