@@ -47,8 +47,6 @@ public class CharacterRepository {
     public CharacterDto findCharacterById(String id) {
         Map<String, String> marvelQueryParams = marvelApiConfig.getAuthenticationQueryParams();
 
-
-
         String finalUrl = characterBasePath.concat("/").concat(id);
 
         JsonNode jsonNode = httpClientService.doGet(finalUrl, marvelQueryParams ,JsonNode.class);

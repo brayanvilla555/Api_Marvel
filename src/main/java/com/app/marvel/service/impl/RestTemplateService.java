@@ -78,6 +78,7 @@ public class RestTemplateService implements HttpClientService {
     }
 
     private String buildFinalUrl(String endPoint, Map<String, String> queryParams) {
+
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(endPoint);
         if(builder != null){
             //con este codigo contruimos el mapa en  cadena de hash=hola?ts=100
