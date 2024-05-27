@@ -1,2 +1,7 @@
-package com.app.marvel.dto.security;public class LoginResponse {
+package com.app.marvel.dto.security;
+
+public record LoginResponse (
+        String jwt
+){
+
 }

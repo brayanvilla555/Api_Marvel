@@ -1,18 +1,24 @@
-package com.app.marvel.service.impl;
+package com.app.marvel.service.impl.security;
 
 import com.app.marvel.dto.security.LoginRequest;
 import com.app.marvel.dto.security.LoginResponse;
 import com.app.marvel.persistence.entity.User;
 import com.app.marvel.persistence.repository.UserRespository;
 import com.app.marvel.service.AuthenticationService;
+import com.app.marvel.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -26,29 +32,31 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserRespository userRespository;
+    private UserDetailsService userDetailsService;
 
 
     @Override
     public LoginResponse authenticate(LoginRequest loginRequest) {
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                loginRequest.usermane(), loginRequest.password()
+        UserDetails user = userDetailsService.loadUserByUsername(loginRequest.username());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                user, loginRequest.password(), user.getAuthorities()
         );
 
-        //si pasa esta linea es que inicio sesion
-        authenticationManager.authenticate(authToken);
-        User user =  userRespository.findByUsername(loginRequest.usermane()).get();
+        authenticationManager.authenticate(authentication);
 
-        String token = jwtService.generateToken(user, generateExtraClaims(user));
-
-        return new LoginResponse(token) ;
+        String jwt = jwtService.generateToken(user, generateExtraClains(user));
+        return new LoginResponse(jwt);
     }
 
-    private Map<String, Object> generateExtraClaims(User user) {
+    private Map<String, Object> generateExtraClains(UserDetails user){
         Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("name", user.getName());
-        extraClaims.put("role", user.getRole());
-        extraClaims.put("permissions", user.getAuthorities());
+        String roleName = ((User) user).getRole().getName().name();
+
+        extraClaims.put("role", roleName);
+        extraClaims.put("authorities", user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList()));
+
         return extraClaims;
     }
 
